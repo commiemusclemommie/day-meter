@@ -47,16 +47,24 @@ object WidgetStyleHelper {
         filledStartColor: Int,
         filledEndColor: Int,
         unfilledColor: Int,
-        cornerRadiusDp: Float = 8f,
+        cornerRadiusDp: Float = 3f,
         widthDp: Int = 240,
         heightDp: Int = 12
     ): Bitmap {
         val density = Resources.getSystem().displayMetrics.density
         val width = (widthDp * density).toInt().coerceAtLeast(1)
         val height = (heightDp * density).toInt().coerceAtLeast(1)
-        val radius = cornerRadiusDp * density
+        val horizontalInset = (2f * density).coerceAtLeast(1f)
+        val verticalInset = (1f * density).coerceAtLeast(1f)
+        val contentLeft = horizontalInset
+        val contentTop = verticalInset
+        val contentRight = (width.toFloat() - horizontalInset).coerceAtLeast(contentLeft + 1f)
+        val contentBottom = (height.toFloat() - verticalInset).coerceAtLeast(contentTop + 1f)
+        val contentWidth = (contentRight - contentLeft).coerceAtLeast(1f)
+        val contentHeight = (contentBottom - contentTop).coerceAtLeast(1f)
+        val radius = minOf(cornerRadiusDp * density, contentHeight / 2f)
         val clampedProgress = progress.coerceIn(0, 100)
-        val progressWidth = (width * (clampedProgress / 100f)).toInt()
+        val progressWidth = contentWidth * (clampedProgress / 100f)
 
         val backgroundPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = unfilledColor
@@ -65,9 +73,9 @@ object WidgetStyleHelper {
         val progressPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.FILL
             shader = LinearGradient(
+                contentLeft,
                 0f,
-                0f,
-                width.toFloat(),
+                contentRight,
                 0f,
                 filledStartColor,
                 filledEndColor,
@@ -77,11 +85,11 @@ object WidgetStyleHelper {
 
         return createBitmap(width, height).also { bitmap ->
             val canvas = Canvas(bitmap)
-            val fullRect = RectF(0f, 0f, width.toFloat(), height.toFloat())
+            val fullRect = RectF(contentLeft, contentTop, contentRight, contentBottom)
             canvas.drawRoundRect(fullRect, radius, radius, backgroundPaint)
 
-            if (progressWidth > 0) {
-                val progressRect = RectF(0f, 0f, progressWidth.toFloat(), height.toFloat())
+            if (progressWidth > 0f) {
+                val progressRect = RectF(contentLeft, contentTop, contentLeft + progressWidth, contentBottom)
                 canvas.drawRoundRect(progressRect, radius, radius, progressPaint)
             }
         }
