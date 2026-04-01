@@ -184,15 +184,15 @@ class DayProgressWidgetProvider : AppWidgetProvider() {
         private fun getBarHeightDp(widgetType: Int, barSize: Int): Int {
             return if (widgetType == 0) {
                 when (barSize) {
-                    0 -> 12
-                    2 -> 24
-                    else -> 18
+                    0 -> 8
+                    2 -> 20
+                    else -> 14
                 }
             } else {
                 when (barSize) {
-                    0 -> 8
-                    2 -> 16
-                    else -> 12
+                    0 -> 6
+                    2 -> 14
+                    else -> 10
                 }
             }
         }

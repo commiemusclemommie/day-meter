@@ -132,6 +132,9 @@ class SettingsActivity : AppCompatActivity() {
             val previewContainer = findViewById<FrameLayout>(R.id.preview_container) ?: return
 
             val layoutId = getLayoutId(prefs.widgetType, prefs.barSize)
+            previewContainer.layoutParams = previewContainer.layoutParams.apply {
+                height = dpToPx(getPreviewHeightDp(prefs.widgetType, prefs.barSize))
+            }
 
             previewContainer.removeAllViews()
             val widgetView = LayoutInflater.from(this).inflate(layoutId, previewContainer, false)
@@ -239,17 +242,37 @@ class SettingsActivity : AppCompatActivity() {
     private fun getBarHeightDp(widgetType: Int, barSize: Int): Int {
         return if (widgetType == 0) {
             when (barSize) {
-                0 -> 12
-                2 -> 24
-                else -> 18
+                0 -> 8
+                2 -> 20
+                else -> 14
             }
         } else {
             when (barSize) {
-                0 -> 8
-                2 -> 16
-                else -> 12
+                0 -> 6
+                2 -> 14
+                else -> 10
             }
         }
+    }
+
+    private fun getPreviewHeightDp(widgetType: Int, barSize: Int): Int {
+        return when (widgetType) {
+            0 -> when (barSize) {
+                0 -> 24
+                2 -> 36
+                else -> 28
+            }
+            1 -> 28
+            else -> when (barSize) {
+                0 -> 28
+                2 -> 42
+                else -> 34
+            }
+        }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt().coerceAtLeast(1)
     }
 
     private fun buildProgressText(progress: Int): CharSequence {
