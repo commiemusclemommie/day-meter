@@ -208,9 +208,9 @@ class SettingsActivity : AppCompatActivity() {
             Color.WHITE
         }
         val cardStrokeColor = if (surfaceColor == Color.TRANSPARENT) {
-            ColorUtils.setAlphaComponent(midColor, 90)
+            ColorUtils.setAlphaComponent(midColor, 120)
         } else {
-            ColorUtils.setAlphaComponent(onSurfaceColor, 28)
+            ColorUtils.setAlphaComponent(onSurfaceColor, 56)
         }
 
         binding.activityRoot.setBackgroundColor(surfaceColor)
@@ -224,11 +224,13 @@ class SettingsActivity : AppCompatActivity() {
         findViewById<MaterialCardView>(R.id.preview_card)?.apply {
             setCardBackgroundColor(surfaceColor)
             strokeColor = cardStrokeColor
+            cardElevation = 8f * resources.displayMetrics.density
         }
 
         findViewById<MaterialCardView>(R.id.settings_card)?.apply {
             setCardBackgroundColor(surfaceColor)
             strokeColor = cardStrokeColor
+            cardElevation = 8f * resources.displayMetrics.density
         }
 
         findViewById<TextView>(R.id.preview_title)?.setTextColor(onSurfaceColor)

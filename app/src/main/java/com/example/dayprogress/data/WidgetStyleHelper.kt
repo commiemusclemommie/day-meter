@@ -62,7 +62,7 @@ object WidgetStyleHelper {
         val contentBottom = (height.toFloat() - verticalInset).coerceAtLeast(contentTop + 1f)
         val contentWidth = (contentRight - contentLeft).coerceAtLeast(1f)
         val contentHeight = (contentBottom - contentTop).coerceAtLeast(1f)
-        val radius = minOf(cornerRadiusDp * density, contentHeight / 2f)
+        val radius = contentHeight / 2f
         val clampedProgress = progress.coerceIn(0, 100)
         val progressWidth = contentWidth * (clampedProgress / 100f)
 
