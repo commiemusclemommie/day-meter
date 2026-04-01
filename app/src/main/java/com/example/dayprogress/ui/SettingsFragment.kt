@@ -2,6 +2,7 @@ package com.example.dayprogress.ui
 
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import android.graphics.Color
 import android.os.Build
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.preference.ListPreference
@@ -16,6 +18,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreferenceCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.example.dayprogress.R
 import com.example.dayprogress.data.AppPreferences
 import com.example.dayprogress.data.DayRepository
@@ -47,7 +50,16 @@ class SettingsFragment : PreferenceFragmentCompat() {
             clipToPadding = false
             val inset = (8 * resources.displayMetrics.density).toInt()
             setPadding(inset, inset, inset, inset)
+            while (itemDecorationCount > 0) {
+                removeItemDecorationAt(0)
+            }
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    applyMenuStyling()
+                }
+            })
         }
+        applyMenuStyling()
     }
 
     private fun bindPreferences() {
@@ -319,6 +331,36 @@ class SettingsFragment : PreferenceFragmentCompat() {
         return String.format(Locale.getDefault(), "%02d:%02d", totalMinutes / 60, totalMinutes % 60)
     }
 
+    private fun getMenuTextColor(): Int {
+        return when (prefs.theme) {
+            1 -> Color.BLACK
+            2 -> Color.WHITE
+            3, 0 -> {
+                val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+                if (nightMode == Configuration.UI_MODE_NIGHT_YES) Color.WHITE else Color.BLACK
+            }
+            else -> Color.WHITE
+        }
+    }
+
+    private fun applyMenuStyling() {
+        if (!isAdded) return
+
+        val titleColor = getMenuTextColor()
+        val summaryColor = Color.argb(
+            if (titleColor == Color.BLACK) 170 else 210,
+            Color.red(titleColor),
+            Color.green(titleColor),
+            Color.blue(titleColor)
+        )
+
+        for (i in 0 until listView.childCount) {
+            val child = listView.getChildAt(i)
+            child.findViewById<TextView>(android.R.id.title)?.setTextColor(titleColor)
+            child.findViewById<TextView>(android.R.id.summary)?.setTextColor(summaryColor)
+        }
+    }
+
     private fun resetToDefaults() {
         prefs.apply {
             widgetType = 2
@@ -354,6 +396,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     private fun updateEverything() {
         DayProgressWidgetProvider.updateAllWidgets(requireContext())
         (activity as? SettingsActivity)?.updatePreview()
+        applyMenuStyling()
         AlarmScheduler.scheduleWidgetUpdates(requireContext())
     }
 }
