@@ -62,20 +62,11 @@ object AlarmScheduler {
         
         try {
             if (canScheduleExactAlarms(context)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    // Use setExactAndAllowWhileIdle for Doze compatibility
-                    alarmManager.setExactAndAllowWhileIdle(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        triggerAtMillis,
-                        pendingIntent
-                    )
-                } else {
-                    alarmManager.setExact(
-                        AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                        triggerAtMillis,
-                        pendingIntent
-                    )
-                }
+                alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    triggerAtMillis,
+                    pendingIntent
+                )
                 WorkManagerHelper.cancelWidgetUpdates(context)
                 Log.d(TAG, "Scheduled exact alarm (Doze-compatible) in $intervalMinutes mins")
             } else {

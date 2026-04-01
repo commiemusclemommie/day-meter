@@ -28,6 +28,7 @@
 - [x] Widget layouts were compacted vertically so the bar-focused widget wastes less top/bottom space.
 - [x] Added explicit small / medium / large bar sizes for better visibility tuning.
 - [x] Reduced the widget provider minimum vertical size so compact widgets can shrink further on launchers that support it.
+- [x] Updated the Android toolchain and dependencies to current compatible versions, migrated Room from kapt to KSP, and cleared the remaining lint/tooling warnings.
 - [x] Progress fill now supports a two-color horizontal gradient.
 - [x] The settings screen was visually refreshed with a nicer preview card, softer surfaces, and better spacing.
 - [x] The launcher icon was redesigned to a fresher day-meter style and the app branding was renamed from `Day Progress` to `day-meter`.
@@ -68,13 +69,9 @@
 
 ## Remaining / Reported Issues
 - [x] Notifications are intentionally out of scope for now. There is no notification channel, scheduling, or permission flow because the current product does not need notifications unless you specifically want reminder-style features later.
-- [ ] Remaining lint warnings are non-blocking and mostly tooling/assets related:
-  - targetSdk is not the latest available version in this build setup
-  - dependency update suggestions require newer AGP compatibility work
-  - Room could be migrated from kapt to KSP for faster builds
-  - launcher icon lint guidance may still want further polishing depending on launcher/icon masks
 - [x] `main` branch protection was enabled with pull-request-based protection and force-push/deletion disabled.
 - [x] Old Dependabot branches were cleaned up; Dependabot remains enabled for future updates.
+- [ ] Widget compactness may still need one more visual pass after real launcher testing, because launcher hosts can add their own padding and resizing constraints.
 - [ ] GitHub publish + latest release creation is the final publishing step for the current local changes.
 
 ## Files Changed
@@ -87,6 +84,8 @@
 - `local.properties`
 - `settings.gradle`
 - `app/build.gradle`
+- `build.gradle`
+- `gradle/wrapper/gradle-wrapper.properties`
 - `app/src/main/AndroidManifest.xml`
 - `app/src/main/java/com/example/dayprogress/data/AppPreferences.kt`
 - `app/src/main/java/com/example/dayprogress/data/DayHistory.kt`
@@ -126,6 +125,7 @@
 - [x] `./gradlew assembleDebug`
 - [x] `./gradlew clean assembleDebug`
 - [x] `./gradlew lintDebug`
+- [x] Lint result: `No issues found.`
 - [x] `adb install -r app/build/outputs/apk/debug/app-debug.apk`
 - Lint reports: `app/build/reports/lint-results-debug.html`, `.txt`, `.xml`
 

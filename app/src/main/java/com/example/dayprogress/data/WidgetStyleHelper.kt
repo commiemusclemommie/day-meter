@@ -8,6 +8,7 @@ import android.graphics.Paint
 import android.graphics.RectF
 import android.graphics.Shader
 import android.graphics.drawable.GradientDrawable
+import androidx.core.graphics.createBitmap
 
 object WidgetStyleHelper {
 
@@ -34,7 +35,7 @@ object WidgetStyleHelper {
             }
         }
 
-        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { bitmap ->
+        return createBitmap(width, height).also { bitmap ->
             val canvas = Canvas(bitmap)
             shape.setBounds(0, 0, width, height)
             shape.draw(canvas)
@@ -74,7 +75,7 @@ object WidgetStyleHelper {
             )
         }
 
-        return Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888).also { bitmap ->
+        return createBitmap(width, height).also { bitmap ->
             val canvas = Canvas(bitmap)
             val fullRect = RectF(0f, 0f, width.toFloat(), height.toFloat())
             canvas.drawRoundRect(fullRect, radius, radius, backgroundPaint)

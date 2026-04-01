@@ -14,6 +14,7 @@ import android.text.Spanned
 import android.text.style.TypefaceSpan
 import android.util.Log
 import android.widget.RemoteViews
+import androidx.core.content.edit
 import com.example.dayprogress.R
 import com.example.dayprogress.data.DayRepository
 import com.example.dayprogress.data.WidgetStyleHelper
@@ -78,7 +79,7 @@ class DayProgressWidgetProvider : AppWidgetProvider() {
             }
             context.startActivity(intent)
         } else {
-            prefs.edit().putLong("last_tap_$appWidgetId", now).apply()
+            prefs.edit { putLong("last_tap_$appWidgetId", now) }
         }
     }
 
