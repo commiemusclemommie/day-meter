@@ -10,33 +10,38 @@
         android:scaleType="fitXY"
         android:contentDescription="@string/widget_background_desc" />
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/widget_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:paddingStart="6dp"
-        android:paddingTop="0dp"
-        android:paddingEnd="6dp"
-        android:paddingBottom="0dp">
+        android:paddingStart="8dp"
+        android:paddingTop="6dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="6dp">
+
+        <ImageView
+            android:id="@+id/progress_bar_image"
+            android:layout_width="match_parent"
+            android:layout_height="12dp"
+            android:layout_gravity="center"
+            android:scaleType="fitXY"
+            android:contentDescription="@string/accessibility_progress_bar" />
 
         <TextView
             android:id="@+id/progress_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/widget_percentage_badge"
+            android:gravity="center"
+            android:paddingStart="10dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="4dp"
             android:text="@string/placeholder_progress"
             android:textColor="#FFFFFF"
             android:textSize="14sp"
             android:textStyle="bold"
             android:contentDescription="@string/accessibility_progress_text" />
-
-        <ImageView
-            android:id="@+id/progress_bar_image"
-            android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:layout_marginTop="0dp"
-            android:scaleType="fitXY"
-            android:contentDescription="@string/accessibility_progress_bar" />
-    </LinearLayout>
+    </FrameLayout>
 </FrameLayout>
